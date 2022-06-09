@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+
+
+/* Motor Title Area: */
+.MotorCard {
+
+    position: relative ;
+    display: grid;
+    width: 344px;
+    height: 400px;
+    max-width: 344px;
+    max-height: 400px;
+    margin: 16px 16px 16px 16px;
+
+    
+    border-style: solid;
+    border-radius: 16px;
+    border-color: black;
+
+    grid-template-rows: 75% 25%;
+
+    padding: 0px 0px 0px 0px;
+
+    
+  
+}
+
+/* Motor Title Grid: */
+.MotorCard > div {
+  
+    background-image: linear-gradient(to top, black 20%, rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.90) 35%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.68) 60%, rgba(0, 0, 0, 0.55) 70%,   transparent) !important;
+    background-position-x: center;
+    background-position-y: bottom;
+    background-repeat: no-repeat;
+    
+    
+
+    border-radius: 0px 0px 16px 16px;
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+
+    height: 100%;
+    width: 100%;
+
+    position:relative;
+    display: flex;
+box-sizing:border-box;
+
+    justify-content: stretch;
+    align-items: stretch;
+    
+    grid-row: 2 / 2;
+}
+
+/*Motor Title Area's text: */
+.MotorCard > div > b{
+    color: white;
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    
+    box-sizing: border-box;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+
+
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+
+
+}
+
+
+
+
+/* .MotorCard2 img{
+ 
+    width: 100%;
+    height: 100%;
+    background-color: blue;
+    margin: 0px 0px 0px 4px;
+    grid-row: 2 / 2;
+
+    align-self: center;
+    justify-self: flex-end;
+} */
+
+.MotorCard2 .title {
+    color: white;
+    font-family: 'Anton', sans-serif;
+    font-size: 24px;
+    box-sizing: border-box;
+    margin: 0px 0px 0px 0px;
+    width: fit-content;
+    height: fit-content;
+
+
+    align-self: center;
+    justify-self: center;
+    text-align: center;
+
+    grid-row: 2 / 2;
+}
+
