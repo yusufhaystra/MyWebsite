@@ -1,31 +1,50 @@
+
+
 class MotorCard{
 
     static IsVideoMuted = true; // Represents the state of sound of the video of this motor is muted or not. (Default value is true)
-    MotorType; // Represents this motor's type.
-    MotorCardDiv;
-    TitleDiv;
+    MotorType; // Represents type of this motor
+    MotorCardDiv; // Represents this MotorCard UI (div element)
+    TitleDiv; // Represents title div of this motor card
+
+    IsMouseEntered = false; // Represents the state of the mouse has entered and has not left yet this motor card.
 
     constructor(motorType){
+   
+        let This = this;
+
         this.MotorType = motorType;
         // Creating a motor card (user control)
         // All other properties are set from the MotorCard.css
         
         this.MotorCardDiv = document.createElement('div');
         this.MotorCardDiv.className = "MotorCard";
-        this.MotorCardDiv.title = this.MotorType;
-        this.MotorCardDiv.addEventListener("mouseenter", this.MotorCard_MouseEnter); 
-        this.MotorCardDiv.addEventListener("mouseleave", this.MotorCard_MouseLeft); 
+  
+        this.MotorCardDiv.addEventListener("mouseenter", function() {
+            This.MotorCard_MouseEnter();
+        }); 
+        this.MotorCardDiv.addEventListener("mouseleave", function(){
+            This.MotorCard_MouseLeft();
+        }); 
+
         
         let motorImage = document.createElement('img');
         switch(this.MotorType)
         {
-            case "Boxer Motor": motorImage.src = "Resources/MotorResources/BoxerMotor/1.png" ; break;
+            case "Boxer Motor": motorImage.src = "Resources/MotorResources/BoxerMotor/0.png" ; break;
+            case "V Motor": motorImage.src = "Resources/MotorResources/VMotor/0.png" ; break;
             default: break;
         }
 
-        TitleDiv = document.createElement('div');
-        this.TitleDiv.addEventListener("mouseenter", this.MotorCardTitle_MouseEntered);
-        this.TitleDiv.addEventListener("mouseleave", this.MotorCardTitle_MouseLeft);
+        this.TitleDiv = document.createElement('div');
+        
+        this.TitleDiv.addEventListener("mouseenter", function(){
+            This.MotorCardTitle_MouseEntered();
+        });
+        this.TitleDiv.addEventListener("mouseleave", function(){
+            This.MotorCardTitle_MouseLeft();
+        });
+
 
         let titleText = document.createElement('B');
         titleText.innerHTML = this.MotorType;
@@ -41,12 +60,13 @@ class MotorCard{
 // Runs whenever the mouse enters any Motor Title's div's area.
 MotorCardTitle_MouseEntered(){
     // I will display the relevant gif and remove the title text.
-
+    
     let gif = document.createElement('img'); // Creating img object to display the GIF
     
-    switch(motorType) 
+    switch(this.MotorType) 
     {
-        case "BoxerMotor": gif.src =  'Resources/MotorResources/BoxerMotor/0.gif'; break;
+        case "Boxer Motor": gif.src =  'Resources/MotorResources/BoxerMotor/0.gif'; break;
+        case "V Motor": gif.src =  'Resources/MotorResources/VMotor/0.gif'; break;
         default: break;
     }
 
@@ -62,9 +82,9 @@ MotorCardTitle_MouseLeft(){
 
     // first child of title div is gif element.
     // Removing the gif.
-    sender.children[0].remove();
+    this.TitleDiv.children[0].remove();
     let title = document.createElement('B'); // Creating b object to display the title
-    title.innerHTML = motorType;
+    title.innerHTML = this.MotorType;
 
     this.TitleDiv.appendChild(title); // Adding title to the sender area.
     
@@ -72,42 +92,39 @@ MotorCardTitle_MouseLeft(){
 
 // Runs whenever the mouse enters any motor card area
 MotorCard_MouseEnter(){
-    // I will remove the motor photo and display the car video and unmute/mute button.
-
-    this.MotorCardDiv.children[0].remove(); // Removing the current motor image.
-
-    let videoDiv = document.createElement('div');
-    videoDiv.id = "VideoDiv";
+   // I will load the video
+   if (this.IsMouseEntered) {return;}
+   this.IsMouseEntered = true;
 
     let video = document.createElement('video'); // Creating the video object to display
-    switch(motorType) 
+    switch(this.MotorType) 
     {
-        case "BoxerMotor": video.src =  'Resources/MotorResources/BoxerMotor/0.mp4'; video.type = 'video/mp4';break;
+        case "Boxer Motor": video.src =  'Resources/MotorResources/BoxerMotor/0.mp4'; video.type = 'video/mp4';break;
+        case "V Motor": video.src =  'Resources/MotorResources/VMotor/0.mp4'; video.type = 'video/mp4';break;
         default: break;
     }
     video.muted = MotorCard.IsVideoMuted;
-
-    let muteButton = document.createElement('button');
-    muteButton.addEventListener("click", MuteButton_Clicked);
-    muteButton.title = "Sesi açmak veya kapatmak için buraya basin";
-
-    videoDiv.appendChild(video);
-    videoDiv.appendChild(muteButton);
-
-    this.MotorCardDiv.insertBefore(videoDiv, this.TitleDiv);
-
+    video.loop = true;
+    // video.autoplay = true;
+    let This = this;
+    video.addEventListener("loadeddata", function(){
+        This.VideoLoaded(video);
+    });
+    video.load();
 }
 
 // Runs whenever the mouse leaves any motor card area
 MotorCard_MouseLeft(){
     // I will display the motor photo and remove the car video and unmute/mute button.
+    this.IsMouseEntered = false;
 
     this.MotorCardDiv.children[0].remove(); // Removing the current motor video div.
 
     let motorImage = document.createElement('img');
         switch(this.MotorType)
         {
-            case "Boxer Motor": motorImage.src = "Resources/MotorResources/BoxerMotor/1.png" ; break;
+            case "Boxer Motor": motorImage.src = "Resources/MotorResources/BoxerMotor/0.png" ; break;
+            case "V Motor": motorImage.src = "Resources/MotorResources/VMotor/0.png" ; break;
             default: break;
         }
 
@@ -115,14 +132,40 @@ MotorCard_MouseLeft(){
 
 }
 
+// Runs whenever the motor video is loaded completely.
+VideoLoaded(Video){
+    // I will remove the motor photo and display the car video and unmute/mute button.
+
+    let videoDiv = document.createElement('div');
+    videoDiv.id = "VideoDiv";
+
+    let muteButton = document.createElement('button');
+    let This = this;
+    muteButton.addEventListener("click", function(){
+      //  MuteButton_Clicked();
+      This.MuteButton_Clicked();
+    });
+    muteButton.title = "Sesi açmak veya kapatmak için buraya basin";
+    muteButton.style.backgroundImage =  MotorCard.IsVideoMuted ? "url('Resources/Icons/Unmute32.png')" : "url('Resources/Icons/Mute32.png')";
+
+    videoDiv.appendChild(Video);
+    videoDiv.appendChild(muteButton);
+
+    this.MotorCardDiv.children[0].remove(); // Removing the current motor image.
+    this.MotorCardDiv.insertBefore(videoDiv, this.TitleDiv);
+
+    Video.play();
+}
+
 // Runs whenever the mouse clicks the mute/unmute the video button.
 MuteButton_Clicked(){
     // Changing mute option.
+
     MotorCard.IsVideoMuted = !MotorCard.IsVideoMuted;
     // this.MotorCardDiv.children[0].children[0] -> video
     this.MotorCardDiv.children[0].children[0].muted = MotorCard.IsVideoMuted;
     // this.MotorCardDiv.children[0].children[1] -> unmute/mute button
-    this.MotorCardDiv.children[0].children[1].style.backgroundImage =  MotorCard.IsVideoMuted ? "url('/Resources/Icons/Unmute32.png')" : "url('/Resources/Icons/Mute32.png')";
+    this.MotorCardDiv.children[0].children[1].style.backgroundImage =  MotorCard.IsVideoMuted ? "url('Resources/Icons/Unmute32.png')" : "url('Resources/Icons/Mute32.png')";
 
 }
 

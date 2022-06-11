@@ -1,10 +1,11 @@
 body{
     margin: 0px 0px 0px 0px;
     padding: 0px 0px 0px 0px;
+
 }
 
 #MainDiv {
-    background-color: antiquewhite;
+    background-color: black;
         position:absolute;
         margin: 0px 0px 0px 0px;
         padding: 0px 0px 0px 0px;
@@ -18,12 +19,18 @@ body{
 }
 
 #WP_Main{
-background-color: antiquewhite;
+background-color:  rgb(255, 255, 255, 0.02);
 
     margin: 0px 0px 0px 0px ;
     width: 100%;
     height:max-content;
-    justify-self: stretch;
+
+    justify-self: center;
+    align-self: center;
+
+    display: flex;
+    position: relative;
+    
   
     grid-row: 2 / 2;
 }
