@@ -18,8 +18,16 @@ function Window_Loaded(){
 
     let wpMain = document.getElementById("WP_Main");
 
-     wpMain.appendChild(new MotorCard("Boxer Motor").MotorCardDiv);
-     wpMain.appendChild(new MotorCard("V Motor").MotorCardDiv);
+
+    wpMain.appendChild(new MotorCard("Boxer Motor").MotorCardDiv);
+    wpMain.appendChild(new MotorCard("V Motor").MotorCardDiv);
+    wpMain.appendChild(new MotorCard("I Motor").MotorCardDiv);
+
+    wpMain.appendChild(new MotorCard("W Motor").MotorCardDiv);
+    wpMain.appendChild(new MotorCard("Opposite Motor").MotorCardDiv);
+
+    // wpMain.appendChild(new MotorCard("B Motor").MotorCardDiv);
+    // wpMain.appendChild(new MotorCard("C Motor").MotorCardDiv);
     //console.log(new MotorCard("Boxer Motor"));
    
 

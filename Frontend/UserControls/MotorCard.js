@@ -7,7 +7,13 @@ class MotorCard{
     MotorCardDiv; // Represents this MotorCard UI (div element)
     TitleDiv; // Represents title div of this motor card
 
-    IsMouseEntered = false; // Represents the state of the mouse has entered and has not left yet this motor card.
+    
+    static IsMouseEntered = false; // Represents the state of the mouse has entered and has not left yet a motor card.
+    static IsLocked = false;
+    // static CurrentFocusedMotorType = "";
+    static GrowRate = [0.8, 0.25];
+    static FocusedMotorCard;
+
 
     constructor(motorType){
    
@@ -27,12 +33,16 @@ class MotorCard{
             This.MotorCard_MouseLeft();
         }); 
 
+
         
         let motorImage = document.createElement('img');
         switch(this.MotorType)
         {
             case "Boxer Motor": motorImage.src = "Resources/MotorResources/BoxerMotor/0.png" ; break;
             case "V Motor": motorImage.src = "Resources/MotorResources/VMotor/0.png" ; break;
+            case "I Motor": motorImage.src = "Resources/MotorResources/IMotor/0.png" ; break;
+            case "W Motor": motorImage.src = "Resources/MotorResources/WMotor/0.png" ; break;
+            case "Opposite Motor": motorImage.src =  'Resources/MotorResources/OppositeMotor/0.png'; break;
             default: break;
         }
 
@@ -52,6 +62,7 @@ class MotorCard{
         this.TitleDiv.appendChild(titleText);
         this.MotorCardDiv.appendChild(motorImage);
         this.MotorCardDiv.appendChild(this.TitleDiv);
+
     }
 
 
@@ -67,6 +78,12 @@ MotorCardTitle_MouseEntered(){
     {
         case "Boxer Motor": gif.src =  'Resources/MotorResources/BoxerMotor/0.gif'; break;
         case "V Motor": gif.src =  'Resources/MotorResources/VMotor/0.gif'; break;
+        case "I Motor": gif.src =  'Resources/MotorResources/IMotor/0.gif'; break;
+        case "W Motor": gif.src =  'Resources/MotorResources/WMotor/0.gif'; break;
+        case "Opposite Motor": gif.src =  'Resources/MotorResources/OppositeMotor/0.gif'; break;
+        case "A Motor": gif.src =  'Resources/MotorResources/AMotor/0.gif'; break;
+        case "B Motor": gif.src =  'Resources/MotorResources/BMotor/0.gif'; break;
+        case "C Motor": gif.src =  'Resources/MotorResources/CMotor/0.gif'; break;
         default: break;
     }
 
@@ -93,42 +110,109 @@ MotorCardTitle_MouseLeft(){
 // Runs whenever the mouse enters any motor card area
 MotorCard_MouseEnter(){
    // I will load the video
-   if (this.IsMouseEntered) {return;}
-   this.IsMouseEntered = true;
+   if (MotorCard.IsMouseEntered || MotorCard.IsLocked) {return;}
+  MotorCard.IsLocked = true;
+  MotorCard.IsMouseEntered = true;
+  if (MotorCard.FocusedMotorCard != null && MotorCard.FocusedMotorCard.MotorType != this.MotorType)
+  {
+   // console.log("UNSAFE 33 DETECTED. Old: " + MotorCard.FocusedMotorCard.MotorType + " Now: " + this.MotorType);
+    MotorCard.FocusedMotorCard.MotorCard_MouseLeft();
+  }
+  MotorCard.FocusedMotorCard = this;
 
-    let video = document.createElement('video'); // Creating the video object to display
-    switch(this.MotorType) 
-    {
-        case "Boxer Motor": video.src =  'Resources/MotorResources/BoxerMotor/0.mp4'; video.type = 'video/mp4';break;
-        case "V Motor": video.src =  'Resources/MotorResources/VMotor/0.mp4'; video.type = 'video/mp4';break;
-        default: break;
-    }
-    video.muted = MotorCard.IsVideoMuted;
-    video.loop = true;
-    // video.autoplay = true;
+   //console.log(this.MotorType + " ENTERING");
+
     let This = this;
-    video.addEventListener("loadeddata", function(){
-        This.VideoLoaded(video);
-    });
-    video.load();
+    let timeOut = setTimeout(function(){
+        if (!MotorCard.IsMouseEntered)
+        {
+           // console.log("UNSAFE DETECTED");
+            clearTimeout(timeOut);
+            timeOut = null;
+            return;
+        }
+        if ( MotorCard.FocusedMotorCard != null && MotorCard.FocusedMotorCard.MotorType != This.MotorType)
+        {
+          //  console.log("UNSAFE 22 DETECTED");
+            clearTimeout(timeOut);
+            timeOut = null;
+            return;
+        }
+      //  console.log(This.MotorType + " ENTERED");
+        let [widthRate, heightRate] = MotorCard.GrowRate;
+        This.MotorCardDiv.style.transition = "width 700ms ease-in 100ms, height 700ms ease-in 100ms";
+        This.MotorCardDiv.style.width = ((This.MotorCardDiv.offsetWidth + 6) * (widthRate + 1)) + "px";
+        This.MotorCardDiv.style.height = ((This.MotorCardDiv.offsetHeight + 6) * (heightRate + 1)) + "px";
+     
+        let video = document.createElement('video'); // Creating the video object to display
+        switch(This.MotorType) 
+        {
+            case "Boxer Motor": video.src =  'Resources/MotorResources/BoxerMotor/0.mp4'; video.type = 'video/mp4';break;
+            case "V Motor": video.src =  'Resources/MotorResources/VMotor/0.mp4'; video.type = 'video/mp4';break;
+            case "I Motor": video.src =  'Resources/MotorResources/IMotor/0.mp4'; video.type = 'video/mp4';break;
+            case "W Motor": video.src =  'Resources/MotorResources/WMotor/0.mp4'; video.type = 'video/mp4';break;
+            case "Opposite Motor": video.src =  'Resources/MotorResources/OppositeMotor/0.mp4'; video.type = 'video/mp4'; break;
+            case "A Motor": video.src =  'Resources/MotorResources/AMotor/0.mp4'; video.type = 'video/mp4';break;
+            case "B Motor": video.src =  'Resources/MotorResources/BMotor/0.mp4'; video.type = 'video/mp4';break;
+            case "C Motor": video.src =  'Resources/MotorResources/CMotor/0.mp4'; video.type = 'video/mp4';break;
+            default: break;
+        }
+        video.muted = MotorCard.IsVideoMuted;
+        video.loop = true;
+        // video.autoplay = true;
+        video.addEventListener("loadeddata", function(){
+            if (!MotorCard.IsMouseEntered) {return;}
+            This.VideoLoaded(video);
+        });
+        video.load();
+
+        clearTimeout(timeOut);
+        timeOut = null;
+
+        MotorCard.IsLocked = false;
+
+    }, 200);
+
+
+    
 }
 
 // Runs whenever the mouse leaves any motor card area
 MotorCard_MouseLeft(){
     // I will display the motor photo and remove the car video and unmute/mute button.
-    this.IsMouseEntered = false;
+    MotorCard.IsLocked = true;
+    
+  //  console.log(this.MotorType + " LEAVING");
+
+    let [widthRate, heightRate] = MotorCard.GrowRate;
+    this.MotorCardDiv.style.transition = "width 0ms ease-in 0ms, height 0ms ease-in 0ms";
+    this.MotorCardDiv.style.width = ((this.MotorCardDiv.offsetWidth - 6) / (widthRate + 1)) + "px";
+    this.MotorCardDiv.style.height = ((this.MotorCardDiv.offsetHeight - 6) / (heightRate + 1)) + "px";
+  
 
     this.MotorCardDiv.children[0].remove(); // Removing the current motor video div.
-
+    
     let motorImage = document.createElement('img');
         switch(this.MotorType)
         {
             case "Boxer Motor": motorImage.src = "Resources/MotorResources/BoxerMotor/0.png" ; break;
             case "V Motor": motorImage.src = "Resources/MotorResources/VMotor/0.png" ; break;
+            case "I Motor": motorImage.src = "Resources/MotorResources/IMotor/0.png" ; break;
+            case "W Motor": motorImage.src = "Resources/MotorResources/WMotor/0.png" ; break;
+            case "Opposite Motor": motorImage.src =  'Resources/MotorResources/OppositeMotor/0.png'; break;
+            case "A Motor": motorImage.src = "Resources/MotorResources/AMotor/0.png" ; break;
+            case "B Motor": motorImage.src = "Resources/MotorResources/BMotor/0.png" ; break;
+            case "C Motor": motorImage.src = "Resources/MotorResources/CMotor/0.png" ; break;
             default: break;
         }
 
     this.MotorCardDiv.insertBefore(motorImage, this.TitleDiv);
+    
+ //   console.log(this.MotorType + " LEFT");
+    MotorCard.IsMouseEntered = false;
+    MotorCard.IsLocked = false;
+    MotorCard.FocusedMotorCard = null;
+
 
 }
 

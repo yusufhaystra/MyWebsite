@@ -6,30 +6,41 @@
 .MotorCard {
 
 background-color: transparent;
-background-image: radial-gradient(circle at center, transparent 40%, white);
+background-image: radial-gradient(circle at center, transparent 40%, rgb(70, 70, 70));
 
     overflow: hidden;
 
+    flex-basis: 30%;
+    
     position: relative ;
     display: grid;
+    min-width: 344px;
+    min-height: 400px;
     width: 344px;
     height: 400px;
-    max-width: 344px;
-    max-height: 400px;
+
     margin: 16px 16px 16px 16px;
     
     border-style: solid;
     border-radius: 16px;
-    border-color: gray;
+    border-width: 1px;
+    border-color: rgb(50, 50, 50);
 
     grid-template-columns: 100%;
     grid-template-rows: 75% 25%;
 
     padding: 0px 0px 0px 0px;
+
+    justify-content: center;
+    align-items: center;
     
-    
+
+    transition-timing-function: ease-in;
+
+
   
 }
+
 
 /*Motor Image:*/
 .MotorCard > img{
@@ -145,7 +156,7 @@ background-image: radial-gradient(circle at center, transparent 40%, white);
 .MotorCard > div {
 
 
-    background-image: linear-gradient(to top, black 20%, rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.90) 35%, rgba(0, 0, 0, 0.85) 40%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.68) 60%, rgba(0, 0, 0, 0.55) 70%,   transparent) !important;
+    background-image: linear-gradient(to top, black 10%, rgba(0, 0, 0, 0.90) 20%, rgba(0, 0, 0, 0.85) 30%, rgba(0, 0, 0, 0.80) 40%, rgba(0, 0, 0, 0.75) 50%, rgba(0, 0, 0, 0.68) 60%, rgba(0, 0, 0, 0.55) 70%,   transparent) !important;
     background-position-x: center;
     background-position-y: bottom;
     background-repeat: no-repeat;
